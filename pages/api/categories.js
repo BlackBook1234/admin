@@ -14,10 +14,11 @@ export default async function handle(req, res) {
 
   if (method === 'POST') {
     const {name,parentCategory,properties} = req.body;
+    console.log("-----"+parentCategory+"-----"+properties) 
     const categoryDoc = await Category.create({
       name,
       parent: parentCategory || undefined,
-      properties,
+      // properties,
     });
     res.json(categoryDoc);
   }

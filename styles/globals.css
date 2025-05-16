@@ -18,9 +18,15 @@ h1{
 label{
     @apply text-gray-600 text-sm;
 }
-.btn-primary{
-    @apply bg-primary text-white px-4 py-1 rounded-sm shadow-sm;
-}
+.btn-primary {
+    background-color: #0c8ce9; /* Ямар нэгэн онцгой өнгө */
+    color: white;
+    padding: 4px 10px;
+    border-radius: 7px; /* Гөлгөр өнцөг */
+  }
+  .btn-primary:hover {
+    background-color: #1c98f4; /* Hover үед илүү гүн өнгөтэй */
+  }
 table.basic{
     @apply w-full bg-white rounded-sm shadow-md;
 }
@@ -35,12 +41,20 @@ table.basic tr td{
 table.basic a{
     @apply px-4 rounded-sm inline-flex mx-1 items-center gap-1 text-sm py-1;
 }
-.btn-default, .btn-red{
-    @apply px-4 py-1 rounded-md;
+
+.btn-default, .btn-red {
+    @apply rounded-md px-4 py-1; /* Өнгө, хэлбэрийн өөрчлөлт */
 }
-.btn-red{
-    @apply bg-red-200 text-red-600 px-4 py-1 rounded-sm shadow-sm;
+.btn-red {
+    background-color: #ffffff;
+    color: #c0392b;
+    padding: 4px 10px;
+    border-radius: 7px;
 }
-.btn-default{
-    @apply bg-white text-gray-800 px-4 py-1 rounded-sm border border-gray-200 shadow-sm;
+.btn-red:hover {
+    background-color: #c0392b; /* Hover үед өнгө өөрчлөгдөнө */
+    color: #ffffff
+}
+.btn-default {
+    @apply bg-white text-gray-800 border border-gray-200; /* Энгийн товчлуур */
 }

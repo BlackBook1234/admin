@@ -11,14 +11,14 @@ export default function OrdersPage() {
   }, []);
   return (
     <Layout>
-      <h1>Orders</h1>
+      <h1>Захиалга</h1>
       <table className="basic">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Paid</th>
-            <th>Recipient</th>
-            <th>Products</th>
+            <th>Өдөр</th>
+            <th>Төлбөр</th>
+            <th></th>
+            <th>Сэлбэгийн нэр</th>
           </tr>
         </thead>
         <tbody>
@@ -27,7 +27,7 @@ export default function OrdersPage() {
             <td>{(new Date(order.createdAt)).toLocaleString()}
             </td>
             <td className={order.paid ? 'text-green-600' : 'text-red-600'}>
-              {order.paid ? 'YES' : 'NO'}
+              {order.paid ? 'Төлсөн' : 'Төлөөгүй'}
             </td>
             <td>
               {order.name} {order.email}<br />
