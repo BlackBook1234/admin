@@ -24,6 +24,10 @@ export default function ProductForm({
   const [isUploading, setIsUploading] = useState(false);
   const [categories, setCategories] = useState([]);
   const router = useRouter();
+  const selectedCategory = categories.find(c => c._id === category);
+  const parentName = selectedCategory?.parent || "";
+
+
   useEffect(() => {
     axios.get('/api/categories').then(result => {
       setCategories(result.data);
@@ -31,7 +35,6 @@ export default function ProductForm({
   }, []);
   async function saveProduct(ev) {
     ev.preventDefault();
-    alert(parentCategory);
     const data = {
       title, description, price, images, category, parentCategory,
       properties: productProperties
@@ -74,16 +77,7 @@ export default function ProductForm({
     });
   }
 
-  const propertiesToFill = [];
-  if (categories.length > 0 && category) {
-    let catInfo = categories.find(({ _id }) => _id === category);
-    propertiesToFill.push(...catInfo.properties);
-    while (catInfo?.parent?._id) {
-      const parentCat = categories.find(({ _id }) => _id === catInfo?.parent?._id);
-      propertiesToFill.push(...parentCat.properties);
-      catInfo = parentCat;
-    }
-  }
+
 
   return (
     <form onSubmit={saveProduct}>
@@ -94,20 +88,23 @@ export default function ProductForm({
         value={title}
         onChange={ev => setTitle(ev.target.value)} />
       <label>Ангилал</label>
-      <select value={category}
-        onChange={ev => setCategory(ev.target.value)}>
+      <select value={category} onChange={ev => setCategory(ev.target.value)}>
         <option value="">Сонгох</option>
-        {categories.length > 0 && categories.map(c => (
+        {[...new Map(categories.map(c => [c.parent, c])).values()].map(c => (
           <option key={c._id} value={c._id}>{c.parent}</option>
         ))}
       </select>
+
       {category !== "" && categories.length > 0 ? (
         <select value={parentCategory}
           onChange={ev => setParentCategory(ev.target.value)}>
           <option value="">Сонгох</option>
-          {categories.map(c => (
-            <option key={c._id} value={c._id}>{c.name}</option>
-          ))}
+          {categories
+            .filter(c => c.parent === parentName)
+            .map(c => (
+              <option key={c._id} value={c._id}>{c.name}</option>
+            ))}
+
         </select>
       ) : <div></div>}
       <label>

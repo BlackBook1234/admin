@@ -2,13 +2,13 @@ import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { withSwal } from 'react-sweetalert2';
+import { DefaultMainCategory } from "@/models/Category";
 
 function Categories({ swal }) {
   const [editedCategory, setEditedCategory] = useState(null);
   const [name, setName] = useState('');
   const [parentCategory, setParentCategory] = useState('');
   const [categories, setCategories] = useState([]);
-  const [maincategories, setMainCategories] = useState(["LEXUS", "TOYOTA", "FORD","NISSAN","BMW","MERCEDES-BENZ","HONDA","HYUNDAI","AUDI","CADILAC","MAZDA","SUBARU","CHEVROLET","SUZUKI","KIA","VOLKSWAGEN","MITSUBISHI","JEEP","PORCHE","DODGE","FERRARI","JAGUAR"]);
   const [properties, setProperties] = useState([]);
   useEffect(() => {
     fetchCategories();
@@ -22,15 +22,11 @@ function Categories({ swal }) {
   async function saveCategory(ev) {
     ev.preventDefault();
     const data = {
-      name,
+      name: name,
       parentCategory,
-      properties: properties.map(p => ({
-        name: p.name,
-        values: p.values.split(','),
-      })),
     };
     if (editedCategory) {
-      data._id = editedCategory._id;
+      data.id = editedCategory.id;
       await axios.put('/api/categories', data);
       setEditedCategory(null);
     } else {
@@ -69,11 +65,7 @@ function Categories({ swal }) {
       }
     });
   }
-  function addProperty() {
-    setProperties(prev => {
-      return [...prev, { name: '', values: '' }];
-    });
-  }
+
   function handlePropertyNameChange(index, property, newName) {
     setProperties(prev => {
       const properties = [...prev];
@@ -111,8 +103,8 @@ function Categories({ swal }) {
             }}
             value={parentCategory}>
             <option value="">Ангилал</option>
-            {maincategories.length > 0 && maincategories.map(category1 => (
-              <option key={category1} value={category1}>{category1}</option>
+            {DefaultMainCategory.length > 0 && DefaultMainCategory.map(category1 => (
+              <option key={category1} value={category1.name}>{category1.name}</option>
             ))}
           </select>
           <input
@@ -120,8 +112,6 @@ function Categories({ swal }) {
             placeholder={'Дэд ангилал'}
             onChange={ev => setName(ev.target.value)}
             value={name} />
-
-
         </div>
         <div className="mb-2">
           <label className="block"></label>
@@ -186,7 +176,7 @@ function Categories({ swal }) {
           <tbody>
             {categories.length > 0 && categories.map(category => (
               <tr key={category._id}>
-                
+
                 <td>{category?.parent}</td>
                 <td>{category.name}</td>
                 <td>
